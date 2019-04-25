@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.restDatabase.model.Contact;
-import com.example.restDatabase.repository.ContactRepository;
+import com.example.restDatabase.repository.ContactDao;
 
 
 
@@ -29,7 +29,7 @@ import com.example.restDatabase.repository.ContactRepository;
 public class ContactController {
 	
 	@Autowired
-	ContactRepository daocontact;
+	ContactDao contactdao;
 	
 	
 	@CrossOrigin(origins = "http://localhost:4200")
@@ -37,7 +37,7 @@ public class ContactController {
 	public ResponseEntity<Object> findAll(){
 		System.out.println("paso por findAll");
 		
-		List<Contact> contactsFound = daocontact.findAll();
+		List<Contact> contactsFound = contactdao.findAll();
 
 		if (contactsFound.size()>0) {	
 			//System.out.println("encontro:"+con.getName() + con.getEmail());
@@ -72,7 +72,7 @@ public class ContactController {
 	public ResponseEntity<Contact> findById(@PathVariable long id){
 		System.out.println("paso por /id");
 		
-	Contact con = daocontact.findById(id).orElse(null);
+	Contact con = contactdao.findById(id).orElse(null);
 
 	
 
@@ -96,7 +96,7 @@ public class ContactController {
 	public ResponseEntity<Object> findByName(@PathVariable String name){
 		System.out.println("paso por /name");
 		
-	List<Contact> contactsFound = daocontact.findByName(name);
+	List<Contact> contactsFound = contactdao.findByName(name);
 
 	if (contactsFound.size()>0) {	
 		//System.out.println("encontro:"+con.getName() + con.getEmail());
@@ -136,7 +136,7 @@ public class ContactController {
 	@CrossOrigin(origins = "http://localhost:4200")
 	@PostMapping
 	public Contact create(@RequestBody Contact contact){
-	    return daocontact.save(contact);
+	    return contactdao.save(contact);
 	    
 	}
 	
@@ -151,21 +151,21 @@ public class ContactController {
 	@PutMapping(value="/{id}")
 	  public ResponseEntity<Contact> update(@PathVariable("id") long id,
 	                                        @RequestBody Contact contact){
-	    return daocontact.findById(id)
+	    return contactdao.findById(id)
 	        .map(record -> {
 	            record.setName(contact.getName());
 	            record.setEmail(contact.getEmail());
 	            record.setPhone(contact.getPhone());
-	            Contact updated = daocontact.save(record);
+	            Contact updated = contactdao.save(record);
 	            return ResponseEntity.ok().body(updated);
 	        }).orElse(ResponseEntity.notFound().build());
 	  }
 	
 	@DeleteMapping(path ={"/{id}"})
 	  public ResponseEntity<?> delete(@PathVariable("id") long id) {
-	    return daocontact.findById(id)
+	    return contactdao.findById(id)
 	        .map(record -> {
-	            daocontact.deleteById(id);
+	            contactdao.deleteById(id);
 	            return ResponseEntity.ok().build();
 	        }).orElse(ResponseEntity.notFound().build());
 	  }

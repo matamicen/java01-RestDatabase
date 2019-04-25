@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.example.restDatabase.model.Contact;
 
-public interface ContactRepository extends JpaRepository<Contact, Long> {
+public interface ContactDao extends JpaRepository<Contact, Long> {
 	
 	
 	public List<Contact> findByName(String nombre);
