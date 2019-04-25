@@ -32,7 +32,7 @@ public class ContactController {
 	ContactRepository daocontact;
 	
 	
-	
+	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping
 	public ResponseEntity<Object> findAll(){
 		System.out.println("paso por findAll");
