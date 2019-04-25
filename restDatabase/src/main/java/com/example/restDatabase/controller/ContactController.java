@@ -34,9 +34,38 @@ public class ContactController {
 	
 	
 	@GetMapping
-	public Iterable<Contact> findAll(){
+	public ResponseEntity<Object> findAll(){
 		System.out.println("paso por findAll");
-	  return daocontact.findAll();
+		
+		List<Contact> contactsFound = daocontact.findAll();
+
+		if (contactsFound.size()>0) {	
+			//System.out.println("encontro:"+con.getName() + con.getEmail());
+			 for(Contact con: contactsFound)
+		     {
+				 System.out.println("name:"+con.getName() + con.getEmail());
+		     }
+		     
+			 JSONObject obj = new JSONObject();
+			 
+
+		      obj.put("error", 0);
+		      obj.put("results", contactsFound);
+		      
+		      
+		      
+
+		return ResponseEntity.ok().body(obj.toString());
+		}else {
+			JSONObject obj = new JSONObject();
+			 
+		   
+			obj.put("error", 1);
+			obj.put("description", "No data found");
+			
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(obj.toString());
+		}
+//	  return daocontact.findAll();
 	}
 	
 	@GetMapping(path = {"/{id}"})
